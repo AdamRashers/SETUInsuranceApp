@@ -3,5 +3,5 @@
 Welcome to my repo.
 
 
-![Alt text](![image](https://github.com/user-attachments/assets/322f5e3f-b0a4-45ad-819f-ba8541d94f8e)
+![Alt text](https://preview.redd.it/rx2yvwaecxq61.png?auto=webp&s=18dcb435c3c35c6ab9fc26ed513c75aac1d50c59)
 )
