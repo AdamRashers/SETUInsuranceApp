@@ -1,6 +1,6 @@
 package org.setu
 
 fun main() {
-    println("Hello World!")
+    println("Welcome to Insurance4You")
 }
 
