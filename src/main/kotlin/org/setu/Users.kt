@@ -2,7 +2,7 @@ package org.setu
 
 abstract class Users(
     val name: String,
-    val email: String
+    val email: String,
     val phone: String,
     val county: String,
 ) {
