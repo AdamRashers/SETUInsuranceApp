@@ -39,10 +39,73 @@ class MainUserInterface : UserInterface {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     private fun showUserScreen() {
-        println("User screen")
+        println("Welcome to Insure4Sure!, please choose an option! (app in beta)")
+        println("")
+        println("1. View policy") //broker will sell policys
+        println("2. Change policy") //will send a notification to the broker for call back
+        println("3. Contact Us!")
+        println("4. View Rewards")
+        println("0. Go Back")
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private fun showTechScreen() {
         print("Enter password: ")
