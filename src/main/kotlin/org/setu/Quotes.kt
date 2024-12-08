@@ -1,6 +1,9 @@
-fun main() {
-    var insuranceCost = 0
+import java.io.File
 
+public fun getQuotes() {
+    var insuranceCost = 0
+    var phoneNumber = ""
+    val quotes = mutableListOf<Pair<Int, String>>()
     fun askQuestion(question: String, options: List<String>, min: Int, max: Int): Int {
         println(question)
         options.forEachIndexed { index, option -> println("${index + 1}. $option") }
@@ -58,4 +61,30 @@ fun main() {
     }
     insuranceCost += if (askQuestion("Do you want comprehensive or third-party fire and theft insurance?", listOf("Comprehensive", "Third-party fire and theft"), 1, 2) == 1) 500 else 300
     println("Your estimated insurance cost is €$insuranceCost.")
+
+    // Ask for phone number after all questions are answered
+    println("Please enter your phone number:")
+    phoneNumber = readLine()?.toString() ?: ""
+
+    println("Your phone number is: $phoneNumber")
+
+
+    quotes.add(Pair(insuranceCost, phoneNumber))
+
+    // Write details to a file
+    val file = File("quote_details.txt")
+    file.writeText("Insurance Cost\tPhone Number\n")
+    quotes.forEach { (cost, number) ->
+        file.appendText("$cost\t$number\n")
+    }
+
+    println("")
+    println("Quote details saved to quote_details.txt")
+    println("")
+    println("")
+    println("Broker will call back and add you to the system shortly")
+    println("")
+    println("")
+    main()
 }
+
