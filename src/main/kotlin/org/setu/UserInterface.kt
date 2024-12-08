@@ -7,16 +7,20 @@ interface UserInterface {
 
 class MainUserInterface : UserInterface {
     override fun displayWelcomeScreen() {
-        println("Welcome to Insure4Sure!")
-        println("Please select an option:")
-        println("1. Customer Shop Around!")
-        println("2. User Login")
-        println("3. Broker Login")
+        println("""
+            **Welcome to Insure4Sure!**
 
+            Please select an option:
+
+            1. Customer Shop Around
+            2. User Login
+            3. Broker Login
+        """.trimIndent())
 
         val option = readLine()?.toIntOrNull() ?: 0
         handleOptionSelection(option)
     }
+
 
     override fun handleOptionSelection(option: Int) {
         when (option) {
@@ -30,14 +34,19 @@ class MainUserInterface : UserInterface {
 
 
     private fun showCustomerScreen() {
-        println("Welcome to Insure4Sure!, please choose an option! (app in beta)")
-        println("")
-        println("1. Get a Quote")
-        println("2. Search Quotes by phone number")
-        println("3. Contact Us!")
-        println("4. Retrieve Letter of Denial")
-        println("5. Report bugs")
-        println("0. Go Back")
+        println("""
+        **Welcome to Insure4Sure!**
+        (App in Beta)
+
+        Please choose an option:
+
+        1. Get a Quote
+        2. Search Quotes by Phone Number
+        3. Contact Us
+        4. Retrieve Letter of Denial
+        5. Report a Bug
+        0. Go Back
+    """.trimIndent())
 
         val option = readLine()?.toIntOrNull() ?: 0
 
@@ -47,29 +56,34 @@ class MainUserInterface : UserInterface {
             3 -> contactUs()
             4 -> retrieveDenialLetter()
             5 -> reportBug()
-            0 -> return // Go back to previous screen
+            0 -> displayWelcomeScreen()
             else -> println("Invalid option. Please try again.")
         }
     }
 
     private fun getQuote() {
+        println("")
         println("Let's get you a quote! Please answer the following questions:")
-        getQuotes() // Call the main function from your quiz
+        println("")
+        getQuotes()
     }
 
 
     private fun searchQuotesByPhoneNumber() {
+        println("")
         println("Enter the phone number to search:")
+        println("")
         val searchPhoneNumber = readLine()?.toString() ?: ""
 
         val file = File("quote_details.txt")
         val lines = file.readLines()
-
+        println("")
         for (line in lines) {
             val parts = line.split("\t")
             if (parts.size >= 2 && parts[1] == searchPhoneNumber) {
                 println("Found quote for phone number $searchPhoneNumber:")
                 println("Insurance Cost: ${parts[0]}")
+                println("")
                 showCustomerScreen()
             }
         }
@@ -77,25 +91,29 @@ class MainUserInterface : UserInterface {
 
 
     private fun contactUs() {
+        println("")
         println("Insure4Sure - Ways to contact")
         println("")
         println("help@insure4sure.ie")
         println("1800780780")
+        println("")
         showCustomerScreen()
     }
 
     private fun retrieveDenialLetter() {
+        println("")
         println("Please enter your name:")
         val name = readLine() ?: ""
+        println("")
 
         println("Please enter your email address:")
         val email = readLine() ?: ""
-
+        println("")
         val file = File("denials.txt")
         file.appendText("Name: $name\nEmail: $email\n\n")
-
+        println("")
         println("Denial letter request submitted. Awaiting broker approval.")
-
+        println("")
         showCustomerScreen()
     }
 
@@ -103,24 +121,30 @@ class MainUserInterface : UserInterface {
         println("Please describe any bugs you encountered")
         val bugDescription = readLine() ?: ""
 
-        // Write bug report to a file
+        println("")
         val file = File("bugs.txt")
         file.appendText("Bug Report:\n$bugDescription\n\n")
-
+        println("")
         println("Bug report saved to bugs.txt. Thank you for making Insure4Sure a safer and better place!!!!")
-
+        println("")
         showCustomerScreen()
     }
 
 
     private fun showBrokerScreen() {
-        println("Welcome to Insure4Sure!, please choose an option! (app in beta)")
-        println("")
-        println("1. View Clients")
-        println("2. View pending policy changes")
-        println("3. Check your bank")
-        println("4. Send letters of denial on behalf of Insure4Sure")
-        println("0. Go Back")
+        println("""
+        **Welcome to Insure4Sure, Broker Portal** 
+        (App in Beta)
+
+        Please choose an option:
+
+        1. View Clients
+        2. View Pending Policy Changes
+        3. Check Bank
+        4. Send Denial Letters
+        5. Create Insurance Policy
+        0. Go Back
+    """.trimIndent())
 
         val option = readLine()?.toIntOrNull() ?: 0
 
@@ -129,14 +153,65 @@ class MainUserInterface : UserInterface {
             2 -> viewPendingPolicyChanges()
             3 -> checkBank()
             4 -> sendDenialLetters()
-            0 -> return
+            5 -> createPolicy()
+            0 -> displayWelcomeScreen()
             else -> println("Invalid option.")
         }
     }
 
     private fun viewClients() {
         println("Viewing clients...")
+
+        val file = File("policies.txt")
+        val lines = file.readLines()
+
+        for (line in lines) {
+            if (line.contains("Name: ")) {
+                val name = line.substringAfter("Name: ").trim()
+                println(name)
+                println("")
+                showBrokerScreen()
+            }
+        }
     }
+
+
+
+    private fun createPolicy() {
+        var car: String = ""
+        var name: String = ""
+        var email: String = ""
+        var price: Double = 0.0
+        var monthlyCost: Double = 0.0
+        var policyNumber: Int? = null
+
+        print("Enter car model and year: ")
+        car = readLine()!!
+
+        print("Enter full name: ")
+        name = readLine()!!
+
+        print("Enter email address: ")
+        email = readLine()!!
+
+        print("Enter annual insurance price: ")
+        price = readLine()!!.toDouble()
+
+        print("Enter a policy number: ")
+        policyNumber = readLine()?.toIntOrNull()
+
+        monthlyCost = price / 12
+
+        val file = File("policies.txt")
+        file.appendText("Car: $car\nName: $name\nEmail: $email\nAnnual Price: $price\nMonthly Cost: $monthlyCost\nPolicy Number: $policyNumber\n\n")
+
+        println("Policy added to system and email sent to $email")
+        println("")
+        showBrokerScreen()
+    }
+
+
+
 
     private fun viewPendingPolicyChanges() {
         val file = File("quote_details.txt")
@@ -193,15 +268,145 @@ class MainUserInterface : UserInterface {
 
 
     private fun showUserScreen() {
-        println("Welcome to Insure4Sure!, please choose an option! (app in beta)")
-        println("")
-        println("1. View policy") //broker will sell policys
-        println("2. Change policy") //will send a notification to the broker for call back
-        println("3. Contact Us!")
-        println("4. View Rewards")
-        println("0. Go Back")
+        println("""
+        **Welcome to Insure4Sure!** 
+        (App in Beta)
 
+        Please choose an option:
+
+        1. View Policy
+        2. Change Policy
+        3. Contact Us
+        4. View Rewards
+        0. Go Back
+    """.trimIndent())
+
+        val choice = readLine()?.toIntOrNull() ?: 0
+
+        when (choice) {
+            1 -> viewPolicy()
+            2 -> changePolicy()
+            3 -> contactUs()
+            4 -> viewRewards()
+            0 -> displayWelcomeScreen()
+            else -> println("Invalid choice")
+        }
     }
+
+    private fun viewPolicy() {
+        println("Enter policy number to view:")
+        val policyNumberToSearch = readLine()?.toIntOrNull() ?: 0
+
+        val file = File("policies.txt")
+        val lines = file.readLines()
+
+        var policyFound = false
+        var currentPolicyLines = mutableListOf<String>()
+
+        for (line in lines) {
+            if (line.contains("Policy Number: $policyNumberToSearch")) {
+                policyFound = true
+                currentPolicyLines.add(line)
+            } else if (policyFound && line.isNotBlank()) {
+                currentPolicyLines.add(line)
+            } else if (policyFound && line.isBlank()) {
+                break
+            }
+        }
+
+        if (policyFound) {
+            currentPolicyLines.forEach { println(it) }
+        } else {
+            println("Policy not found.")
+        }
+    }
+
+
+
+
+
+
+
+
+    private fun changePolicy() {
+        println("Enter policy number to change:")
+        val policyNumberToChange = readLine()?.toIntOrNull() ?: 0
+
+        val file = File("policies.txt")
+        val lines = file.readLines()
+        val newLines = mutableListOf<String>()
+
+        var policyFound = false
+
+        for (line in lines) {
+            if (line.contains("Policy Number: $policyNumberToChange")) {
+                policyFound = true
+                println("Enter new car model and year:")
+                val newCar = readLine()!!
+                newLines.add(line.replaceFirst("Car: .+", "Car: $newCar"))
+            } else {
+                newLines.add(line)
+            }
+        }
+
+        if (policyFound) {
+            file.writeText(newLines.joinToString("\n"))
+            println("Policy updated successfully.")
+            showUserScreen()
+        } else {
+            println("Policy not found.")
+        }
+    }
+
+
+
+
+    private fun viewRewards() {
+        println("""
+        **Your Exclusive Rewards**
+
+        * **20% OFF** Halfords car parts
+        * **10% OFF** Circle K fuel cards
+    """.trimIndent())
+
+        println("\nPress any key to return to the main menu.")
+        readLine()
+        displayWelcomeScreen()
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private fun showTechScreen() {
@@ -272,7 +477,9 @@ class MainUserInterface : UserInterface {
         println("Enter the phone number to delete details for:")
         val phoneNumberToDelete = readLine() ?: ""
 
-        val file = File("quote_details.txt")
+        val file = File("tech_users.txt")
+        val tempFile = File("temp.txt")
+
         val lines = file.readLines()
         val newLines = mutableListOf<String>()
 
@@ -283,11 +490,15 @@ class MainUserInterface : UserInterface {
             }
         }
 
-        file.writeText("") // Clear the file
+        tempFile.writeText("")
         newLines.forEach { line ->
-            file.appendText("$line\n")
+            tempFile.appendText("$line\n")
         }
 
+        file.delete()
+        tempFile.renameTo(file)
+
         println("Details deleted successfully.")
+        showTechScreen()
     }
 }
