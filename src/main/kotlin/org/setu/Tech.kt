@@ -1,20 +1,10 @@
 package org.setu
 
-class Tech(
-    name: String,
-    email: String,
-    phone: String,
-    county: String,
-    var techLevel: Int
-) : Users(name, email, phone, county) {
+data class Tech(
+    val name: String,
+    val email: String,
+    val phone: String,
+    val county: String,
+    val techLevel: String
+)
 
-    override fun toString(): String {
-        return """
-            Tech Level: $techLevel
-            Name: $name
-            Email: $email
-            Phone: $phone
-            County: $county
-        """.trimIndent()
-    }
-}
