@@ -62,7 +62,7 @@ public fun getQuotes() {
     insuranceCost += if (askQuestion("Do you want comprehensive or third-party fire and theft insurance?", listOf("Comprehensive", "Third-party fire and theft"), 1, 2) == 1) 500 else 300
     println("Your estimated insurance cost is €$insuranceCost.")
 
-    // Ask for phone number after all questions are answered
+
     println("Please enter your phone number:")
     phoneNumber = readLine()?.toString() ?: ""
 
@@ -71,7 +71,6 @@ public fun getQuotes() {
 
     quotes.add(Pair(insuranceCost, phoneNumber))
 
-    // Write details to a file
     val file = File("quote_details.txt")
     file.writeText("Insurance Cost\tPhone Number\n")
     quotes.forEach { (cost, number) ->

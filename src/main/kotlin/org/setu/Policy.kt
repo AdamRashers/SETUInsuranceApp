@@ -2,7 +2,7 @@ package org.setu
 
 data class Policy(
     val car: String,
-    val user: User,  // User is a data class now
+    val user: User,
     val price: Double,
     val policyNumber: Int?
 ) {
@@ -16,6 +16,6 @@ data class Policy(
 data class User(
     val name: String,
     val email: String,
-    val phone: String,  // Add phone number property (optional)
-    val county: String  // Add county property (optional)
+    val phone: String,
+    val county: String
 )
