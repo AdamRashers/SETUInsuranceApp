@@ -80,14 +80,24 @@ class MainUserInterface : UserInterface {
         val file = File("quote_details.txt")
         val lines = file.readLines()
         println("")
+
+        var quoteFound = false
         for (line in lines) {
             val parts = line.split("\t")
             if (parts.size >= 2 && parts[1] == searchPhoneNumber) {
+                quoteFound = true
                 println("Found quote for phone number $searchPhoneNumber:")
                 println("Insurance Cost: ${parts[0]}")
                 println("")
                 showCustomerScreen()
             }
+        }
+
+        if (!quoteFound) {
+            println("")
+            println("No quote found for the given phone number. Please try again.")
+            println("")
+            showCustomerScreen()
         }
     }
 
@@ -162,7 +172,7 @@ class MainUserInterface : UserInterface {
     }
 
     private fun viewClients() {
-        println("Viewing clients...")
+        println("Displaying clients")
 
         val file = File("policies.txt")
         val lines = file.readLines()
@@ -438,29 +448,29 @@ class MainUserInterface : UserInterface {
     }
 
     private fun addTechUser() {
-        println("Enter the name of the tech user:")
+        println("Enter the name of the user:")
         val name = readLine() ?: ""
 
-        println("Enter the email of the tech user:")
+        println("Enter the email of the user:")
         val email = readLine() ?: ""
 
-        println("Enter the phone number of the tech user:")
+        println("Enter the phone number of theuser:")
         val phoneNumber = readLine() ?: ""
 
-        println("Enter the county of the tech user:")
+        println("Enter the county of the user:")
         val county = readLine() ?: ""
 
-        println("Enter the tech level of the user (e.g., junior, senior):")
+        println("Enter the tech level:")
         val techLevel = readLine() ?: ""
 
         val tech = Tech(name, email, phoneNumber, county, techLevel)
 
-        // Now, you can save the Tech object to a file or database.
-        // For example, to save it to a text file:
+
         val file = File("tech_users.txt")
-        file.appendText("$tech\n") // Assuming you've overridden toString() in the Tech class
+        file.appendText("$tech\n")
 
         println("Tech user added successfully.")
+        showTechScreen()
     }
 
     private fun removeTechUser() {
@@ -483,7 +493,7 @@ class MainUserInterface : UserInterface {
             file.appendText("$line\n")
         }
 
-        println("Tech user removed successfully.")
+        println("Tech user removed .")
     }
 
     private fun deleteDetailsByNumber() {
@@ -502,16 +512,13 @@ class MainUserInterface : UserInterface {
                 newLines.add(line)
             }
         }
-
         tempFile.writeText("")
         newLines.forEach { line ->
             tempFile.appendText("$line\n")
         }
-
         file.delete()
         tempFile.renameTo(file)
-
-        println("Details deleted successfully.")
+        println("Details deleted.")
         showTechScreen()
     }
 }
