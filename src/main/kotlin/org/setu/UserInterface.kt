@@ -1,3 +1,5 @@
+import org.setu.Policy
+import org.setu.User
 import java.io.File
 
 interface UserInterface {
@@ -177,40 +179,38 @@ class MainUserInterface : UserInterface {
 
 
 
-    private fun createPolicy() {
-        var car: String = ""
-        var name: String = ""
-        var email: String = ""
-        var price: Double = 0.0
-        var monthlyCost: Double = 0.0
-        var policyNumber: Int? = null
+    fun createPolicy() {
+        println("Enter car model and year: ")
+        val car = readLine()!!
 
-        print("Enter car model and year: ")
-        car = readLine()!!
+        println("Enter full name: ")
+        val name = readLine()!!
 
-        print("Enter full name: ")
-        name = readLine()!!
+        println("Enter email address: ")
+        val email = readLine()!!
 
-        print("Enter email address: ")
-        email = readLine()!!
+        println("Enter phone number: ")
+        val phone = readLine()!!
 
-        print("Enter annual insurance price: ")
-        price = readLine()!!.toDouble()
+        println("Enter county: ")
+        val county = readLine()!!
 
-        print("Enter a policy number: ")
-        policyNumber = readLine()?.toIntOrNull()
+        println("Enter annual insurance price: ")
+        val price = readLine()!!.toDouble()
 
-        monthlyCost = price / 12
+        println("Enter a policy number: ")
+        val policyNumber = readLine()?.toIntOrNull()
+
+        val user = User(name, email, phone, county)
+        val policy = Policy(car, user, price, policyNumber)
 
         val file = File("policies.txt")
-        file.appendText("Car: $car\nName: $name\nEmail: $email\nAnnual Price: $price\nMonthly Cost: $monthlyCost\nPolicy Number: $policyNumber\n\n")
+        file.appendText(policy.toString() + "\n")
 
         println("Policy added to system and email sent to $email")
         println("")
         showBrokerScreen()
     }
-
-
 
 
     private fun viewPendingPolicyChanges() {
@@ -441,11 +441,24 @@ class MainUserInterface : UserInterface {
         println("Enter the name of the tech user:")
         val name = readLine() ?: ""
 
+        println("Enter the email of the tech user:")
+        val email = readLine() ?: ""
+
         println("Enter the phone number of the tech user:")
         val phoneNumber = readLine() ?: ""
 
+        println("Enter the county of the tech user:")
+        val county = readLine() ?: ""
+
+        println("Enter the tech level of the user (e.g., junior, senior):")
+        val techLevel = readLine() ?: ""
+
+        val tech = Tech(name, email, phoneNumber, county, techLevel)
+
+        // Now, you can save the Tech object to a file or database.
+        // For example, to save it to a text file:
         val file = File("tech_users.txt")
-        file.appendText("$name\t$phoneNumber\n")
+        file.appendText("$tech\n") // Assuming you've overridden toString() in the Tech class
 
         println("Tech user added successfully.")
     }
